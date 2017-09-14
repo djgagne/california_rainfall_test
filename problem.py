@@ -26,16 +26,17 @@ score_types = [
 def get_cv(X, y):
     groups = np.zeros(y.shape)
     i = 0
-    ens_size = int(y.shape[0] / 4)
-    for g in range(4):
-        groups[i: i + ens_size] = g
-        i += ens_size
+    t_size = 1155
+    n_members = int(y.size / t_size)
+    for g in range(n_members):
+        groups[i: i + t_size] = g
+        i += t_size
     cv = LeaveOneGroupOut()
     X_cv = np.zeros((y.shape[0], 2))
     return cv.split(X_cv, y, groups)
 
 def _read_data(path, f_prefix):
-    data_vars = ["TS", "PSL", "TMQ", "U_500", "V_500"]
+    data_vars = ["TS", "PSL", "TMQ"]
     X_coll = []
     for data_var in data_vars:
         nc_file = join(path, "data", f_prefix + "_{0}.nc".format(data_var))
